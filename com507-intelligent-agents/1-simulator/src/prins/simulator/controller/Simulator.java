@@ -16,7 +16,6 @@
  */
 package prins.simulator.controller;
 
-import java.awt.Color;
 import prins.simulator.model.Model;
 import prins.simulator.view.Gui;
 
