@@ -14,20 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package prins.simulator;
+package prins.simulator.model;
+
+import prins.simulator.util.Location;
 
 /**
  *
  * @author Prins Butt
  */
-public class Constants {
-    public static final String SIM_NAME = "Simulator";
+public abstract class Agent {
     
-    public static final int INIT_SIM_SPEED = 1;
-    public static final int MIN_SIM_SPEED = 1;
-    public static final int MAX_SIM_SPEED = 10;
+    protected Location location;
     
-    public static final int WORLD_WIDTH = 30;
-    public static final int WORLD_HEIGHT = 30;
-    public static final int WORLD_CELL_SIZE = 20;
+    public Agent() {
+        location = new Location(0, 0);
+    }
 }

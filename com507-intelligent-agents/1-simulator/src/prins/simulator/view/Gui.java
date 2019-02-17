@@ -17,7 +17,14 @@
 package prins.simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,10 +34,13 @@ import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import prins.simulator.Constants;
-import prins.simulator.model.Model;
+import prins.simulator.model.Agent;
+import prins.simulator.model.Environment;
 
 /**
  *
@@ -38,24 +48,62 @@ import prins.simulator.model.Model;
  */
 public class Gui extends JFrame {
 
+    private final Map<Class, Color> agentTypesMap;
+    private PropertyChangeSupport changes;
+    private JPanel legendPanel;
+    private final Environment model;
     private JButton resetButton;
-    private int speed;
     private JSlider speedSlider;
     private JButton startButton;
-    private int step;
     private JButton stepButton;
     private JTextField stepTextField;
     private JButton stopButton;
     private JTable world;
 
-    public Gui(Model model) {
+    public Gui(Environment model) {
+        this.model = model;
+        agentTypesMap = new HashMap<>();
+
+        changes = new PropertyChangeSupport(this);
+
         initGui();
         initComponents();
     }
 
-    public void showGui() {
-        pack();
-        setVisible(true);
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    public void registerAgentColors(Class agent, Color color) {
+        if (!agentTypesMap.containsKey(agent)) {
+            agentTypesMap.put(agent, color);
+
+            JLabel colorLabel = new JLabel();
+            colorLabel.setBackground(color);
+            colorLabel.setOpaque(true);
+            colorLabel.setPreferredSize(new Dimension(15, 15));
+            legendPanel.add(colorLabel);
+            legendPanel.add(new JLabel(agent.getSimpleName()));
+        }
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        changes.removePropertyChangeListener(l);
+    }
+
+    public void render() {
+        if (!isVisible()) {
+            pack();
+            setVisible(true);
+        }
+        
+        world.repaint();
+    }
+    
+    public void setStep(int step) {
+        stepTextField.setText("" + step);
     }
 
     private void initComponents() {
@@ -99,7 +147,6 @@ public class Gui extends JFrame {
 
         stepTextField = new JTextField();
         stepTextField.setEnabled(false);
-        stepTextField.setText("" + step);
         stepTextField.setColumns(5);
         controlsPanel.add(stepTextField);
 
@@ -113,6 +160,9 @@ public class Gui extends JFrame {
                 Constants.INIT_SIM_SPEED);
         speedSlider.setMinorTickSpacing(1);
         speedSlider.setPaintTicks(true);
+        speedSlider.addChangeListener((ChangeEvent e) -> {
+            slide();
+        });
 
         controlsPanel.add(speedSlider);
 
@@ -127,22 +177,26 @@ public class Gui extends JFrame {
     }
 
     private void initInfo() {
-        JPanel infoPanel = new JPanel();
-        infoPanel.add(new JLabel("Simulator"));
-        add(infoPanel, BorderLayout.NORTH);
+        legendPanel = new JPanel();
+        add(legendPanel, BorderLayout.NORTH);
     }
 
     private void initWorld() {
-        DefaultTableModel model = new DefaultTableModel(
-                Constants.WORLD_WIDTH,
-                Constants.WORLD_HEIGHT);
-        world = new JTable(model);
+        DefaultTableModel tableModel = new DefaultTableModel(
+                (model.getWidth() > 0)
+                ? model.getWidth() : Constants.WORLD_WIDTH,
+                (model.getHeight() > 0)
+                ? model.getHeight() : Constants.WORLD_WIDTH
+        );
+
+        world = new JTable(tableModel);
         world.setEnabled(false);
 
-        for (int col = 0; col < Constants.WORLD_WIDTH; col++) {
+        for (int col = 0; col < model.getWidth(); col++) {
             TableColumn column = world.getColumnModel().getColumn(col);
             column.setMinWidth(Constants.WORLD_CELL_SIZE);
             column.setMaxWidth(Constants.WORLD_CELL_SIZE);
+            world.setDefaultRenderer(world.getColumnClass(col), new CellRenderer());
         }
 
         JPanel worldPanel = new JPanel();
@@ -152,10 +206,12 @@ public class Gui extends JFrame {
 
     private void reset() {
         resetButton.setEnabled(false);
-        step = 0;
-        stepTextField.setText("" + step);
-        speed = Constants.MIN_SIM_SPEED;
-        speedSlider.setValue(speed);
+
+        changes.firePropertyChange("reset", false, true);
+    }
+
+    private void slide() {
+        changes.firePropertyChange("speed", 0, speedSlider.getValue());
     }
 
     private void start() {
@@ -163,20 +219,50 @@ public class Gui extends JFrame {
         startButton.setEnabled(false);
         stepButton.setEnabled(false);
         resetButton.setEnabled(false);
+
+        changes.firePropertyChange("start", false, true);
     }
 
     private void step() {
-        step += speedSlider.getValue();
-        stepTextField.setText("" + step);
         resetButton.setEnabled(true);
+
+        changes.firePropertyChange("step", false, true);
     }
 
     private void stop() {
         stopButton.setEnabled(false);
         startButton.setEnabled(true);
         stepButton.setEnabled(true);
-        if (step > 0) {
+
+        if (Integer.parseInt(stepTextField.getText()) > 0) {
             resetButton.setEnabled(true);
+        }
+
+        changes.firePropertyChange("stop", true, false);
+    }
+
+    private class CellRenderer extends DefaultTableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+
+            Component component = super.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, column);
+
+            Agent agent = model.getAgent(row, column);
+
+            if (agent != null && agentTypesMap.containsKey(agent.getClass())) {
+                component.setBackground(agentTypesMap.get(agent.getClass()));
+            } else {
+                component.setBackground(null);
+            }
+
+            return component;
         }
     }
 }

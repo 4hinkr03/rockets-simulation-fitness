@@ -14,20 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package prins.simulator.controller;
-
-import prins.simulator.model.Model;
-import prins.simulator.view.Gui;
+package prins.simulator.util;
 
 /**
  *
- * @author Prins
+ * @author Prins Butt
  */
-public class Simulator {
-    
-    public static void main(String[] args) {
-        Model model = new Model();
-        Gui gui = new Gui(model);
-        gui.showGui();
+public class Location {
+
+    private int x;
+    private int y;
+
+    public Location(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

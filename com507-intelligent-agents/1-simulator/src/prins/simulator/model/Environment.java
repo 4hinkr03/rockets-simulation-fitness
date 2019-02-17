@@ -18,8 +18,15 @@ package prins.simulator.model;
 
 /**
  *
- * @author Prins
+ * @author Prins Butt
  */
-public class Model {
-    
+public abstract class Environment {
+
+    public abstract Agent getAgent(int row, int column);
+
+    public abstract int getHeight();
+
+    public abstract int getWidth();
+
+    public abstract void setAgent(Agent agent, int row, int column);
 }
