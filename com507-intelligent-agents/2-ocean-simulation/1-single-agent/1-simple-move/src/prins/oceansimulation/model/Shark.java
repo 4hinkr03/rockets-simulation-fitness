@@ -33,7 +33,7 @@ public class Shark extends Agent {
     public void act(Ocean ocean) {
         List<Location> freeLocations = ocean.findFreeLocations(location);
         ocean.setAgent(null, location);
-        ocean.setAgent(this, freeLocations.get(0));
         location = freeLocations.get(0);
+        ocean.setAgent(this, location);
     }
 }
