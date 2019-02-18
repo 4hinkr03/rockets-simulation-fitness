@@ -14,45 +14,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package prins.simulator.model;
+package prins.simulator;
 
 /**
- * Agent is abstract class for all implementations of an agent in the
- * simulation.
+ * Config contains the configuration variables to control the simulation.
  *
  * @author Prins Butt
  */
-public abstract class Agent {
+public class Config {
 
     /**
-     * The current location of the agent.
+     * The name of the simulator.
      */
-    protected Location location;
+    public static String SIM_NAME = "Simulator";
 
     /**
-     * Constructs an agent with the specified location.
-     *
-     * @param location The specified location.
+     * The initial speed of simulation.
      */
-    public Agent(Location location) {
-        this.location = location;
-    }
+    public static int INIT_SIM_SPEED = 1;
 
     /**
-     * Retrieves the current location of the agent.
-     *
-     * @return A location object containing the current location.
+     * The minimum speed of simulation.
      */
-    public Location getLocation() {
-        return location;
-    }
+    public static int MIN_SIM_SPEED = 1;
 
     /**
-     * Sets the location of the agent.
-     *
-     * @param location The current location of the agent.
+     * The maximum speed of simulation.
      */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+    public static int MAX_SIM_SPEED = 10;
+
+    /**
+     * The width of the world to be simulated.
+     */
+    public static int WORLD_WIDTH = 30;
+
+    /**
+     * The height of the world to be simulated.
+     */
+    public static int WORLD_HEIGHT = 30;
+
+    /**
+     * The size of a cell in the world to simulated.
+     */
+    public static int WORLD_CELL_SIZE = 20;
 }

@@ -38,18 +38,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import prins.simulator.Constants;
+import prins.simulator.Config;
 import prins.simulator.model.Agent;
 import prins.simulator.model.Environment;
+import prins.simulator.model.Location;
 
 /**
+ * A graphical user interface for controlling a simulation.
  *
  * @author Prins Butt
  */
 public class Gui extends JFrame {
 
     private final Map<Class, Color> agentTypesMap;
-    private PropertyChangeSupport changes;
+    private final PropertyChangeSupport changes;
     private JPanel legendPanel;
     private final Environment model;
     private JButton resetButton;
@@ -60,6 +62,12 @@ public class Gui extends JFrame {
     private JButton stopButton;
     private JTable world;
 
+    /**
+     * Sets up a graphical user interface to control a simulation.
+     *
+     * @param model The environment to be visualised by the graphical user
+     * interface.
+     */
     public Gui(Environment model) {
         this.model = model;
         agentTypesMap = new HashMap<>();
@@ -75,6 +83,13 @@ public class Gui extends JFrame {
         changes.addPropertyChangeListener(l);
     }
 
+    /**
+     * Registers an agent class and its associated colour with the graphical
+     * user interface.
+     *
+     * @param agent The agent class to be registered.
+     * @param color The colour associated with the agent.
+     */
     public void registerAgentColors(Class agent, Color color) {
         if (!agentTypesMap.containsKey(agent)) {
             agentTypesMap.put(agent, color);
@@ -93,15 +108,24 @@ public class Gui extends JFrame {
         changes.removePropertyChangeListener(l);
     }
 
+    /**
+     * Renders the graphical user interface.
+     */
     public void render() {
         if (!isVisible()) {
             pack();
             setVisible(true);
         }
-        
+
         world.repaint();
     }
-    
+
+    /**
+     * Set the value of the current simulation step in the graphical user
+     * interface.
+     *
+     * @param step The current simulation step.
+     */
     public void setStep(int step) {
         stepTextField.setText("" + step);
     }
@@ -155,9 +179,9 @@ public class Gui extends JFrame {
         controlsPanel.add(new JLabel("Speed"));
 
         speedSlider = new JSlider(JSlider.HORIZONTAL,
-                Constants.MIN_SIM_SPEED,
-                Constants.MAX_SIM_SPEED,
-                Constants.INIT_SIM_SPEED);
+                Config.MIN_SIM_SPEED,
+                Config.MAX_SIM_SPEED,
+                Config.INIT_SIM_SPEED);
         speedSlider.setMinorTickSpacing(1);
         speedSlider.setPaintTicks(true);
         speedSlider.addChangeListener((ChangeEvent e) -> {
@@ -170,7 +194,7 @@ public class Gui extends JFrame {
     }
 
     private void initGui() {
-        setTitle(Constants.SIM_NAME);
+        setTitle(Config.SIM_NAME);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setDefaultLookAndFeelDecorated(true);
         setLayout(new BorderLayout());
@@ -184,9 +208,9 @@ public class Gui extends JFrame {
     private void initWorld() {
         DefaultTableModel tableModel = new DefaultTableModel(
                 (model.getWidth() > 0)
-                ? model.getWidth() : Constants.WORLD_WIDTH,
+                ? model.getWidth() : Config.WORLD_WIDTH,
                 (model.getHeight() > 0)
-                ? model.getHeight() : Constants.WORLD_WIDTH
+                ? model.getHeight() : Config.WORLD_WIDTH
         );
 
         world = new JTable(tableModel);
@@ -194,8 +218,8 @@ public class Gui extends JFrame {
 
         for (int col = 0; col < model.getWidth(); col++) {
             TableColumn column = world.getColumnModel().getColumn(col);
-            column.setMinWidth(Constants.WORLD_CELL_SIZE);
-            column.setMaxWidth(Constants.WORLD_CELL_SIZE);
+            column.setMinWidth(Config.WORLD_CELL_SIZE);
+            column.setMaxWidth(Config.WORLD_CELL_SIZE);
             world.setDefaultRenderer(world.getColumnClass(col), new CellRenderer());
         }
 
@@ -254,7 +278,7 @@ public class Gui extends JFrame {
             Component component = super.getTableCellRendererComponent(
                     table, value, isSelected, hasFocus, row, column);
 
-            Agent agent = model.getAgent(row, column);
+            Agent agent = model.getAgent(new Location(row, column));
 
             if (agent != null && agentTypesMap.containsKey(agent.getClass())) {
                 component.setBackground(agentTypesMap.get(agent.getClass()));

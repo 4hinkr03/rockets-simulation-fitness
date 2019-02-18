@@ -17,16 +17,44 @@
 package prins.simulator.model;
 
 /**
+ * Environment is the abstract class for all implementations of
  *
  * @author Prins Butt
  */
 public abstract class Environment {
 
-    public abstract Agent getAgent(int row, int column);
+    /**
+     * Clears the environment.
+     */
+    public abstract void clear();
 
+    /**
+     * Retrieves the agent at the specified location in the environment.
+     *
+     * @param location The specified location of the agent
+     * @return The agent at the specified location.
+     */
+    public abstract Agent getAgent(Location location);
+
+    /**
+     * Retrieve the height of the environment.
+     *
+     * @return The height of the environment.
+     */
     public abstract int getHeight();
 
+    /**
+     * Retrieve the width of the environment.
+     *
+     * @return The width of the environment.
+     */
     public abstract int getWidth();
 
-    public abstract void setAgent(Agent agent, int row, int column);
+    /**
+     * Set the agent at the specified location in the environment.
+     *
+     * @param agent The agent to be added to the environment.
+     * @param location The specified location of the agent.
+     */
+    public abstract void setAgent(Agent agent, Location location);
 }

@@ -20,18 +20,33 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
+ * Simulator is the abstract class for all simulation implementations.
  *
  * @author Prins Butt
  */
 public abstract class Simulator implements PropertyChangeListener {
-    
+
+    /**
+     * State of the simulation execution.
+     */
     protected boolean isRunning;
+
+    /**
+     * The speed of simulation.
+     */
     protected int speed;
+
+    /**
+     * The current simulation step.
+     */
     protected int step;
 
+    /**
+     * Default constructor to initialise a simulator.
+     */
     public Simulator() {
         step = 0;
-        speed = Constants.INIT_SIM_SPEED;
+        speed = Config.INIT_SIM_SPEED;
     }
 
     @Override
@@ -41,6 +56,7 @@ public abstract class Simulator implements PropertyChangeListener {
             case "reset":
                 isRunning = false;
                 step = 0;
+                reset();
                 render();
                 break;
 
@@ -63,11 +79,19 @@ public abstract class Simulator implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Executes the simulation.
+     */
     public void run() {
+
+        prepare();
+
+        render();
+
         while (true) {
 
             try {
-                Thread.sleep((Constants.MAX_SIM_SPEED / speed) * 100);
+                Thread.sleep((Config.MAX_SIM_SPEED / speed) * 100);
 
                 if (isRunning) {
                     step++;
@@ -80,7 +104,24 @@ public abstract class Simulator implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Prepares the simulation prior to execution.
+     */
+    protected void prepare() {
+    }
+
+    /**
+     * Renders the current simulation state.
+     */
     protected abstract void render();
 
+    /**
+     * Resets the simulation to its initial state.
+     */
+    protected abstract void reset();
+
+    /**
+     * Updates the simulation to its next state.
+     */
     protected abstract void update();
 }

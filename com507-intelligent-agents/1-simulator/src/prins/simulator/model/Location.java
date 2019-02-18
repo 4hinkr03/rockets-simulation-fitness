@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package prins.simulator.util;
+package prins.simulator.model;
 
 /**
+ * Location models the horizontal and vertical distance in a 2D environment.
  *
  * @author Prins Butt
  */
@@ -25,23 +26,49 @@ public class Location {
     private int x;
     private int y;
 
+    /**
+     * Sets the horizontal and vertical distance in a 2D environment.
+     *
+     * @param x The horizontal distance
+     * @param y The vertical distance
+     */
     public Location(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Retrieves the horizontal distance.
+     *
+     * @return The horizontal distance.
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Retrieves the vertical distance.
+     *
+     * @return The vertical distance.
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Sets the horizontal distance.
+     *
+     * @param x The horizontal distance.
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * Sets the vertical distance.
+     *
+     * @param y The vertical distance.
+     */
     public void setY(int y) {
         this.y = y;
     }
