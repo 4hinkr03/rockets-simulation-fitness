@@ -62,6 +62,7 @@ public abstract class Simulator implements PropertyChangeListener {
 
             case "speed":
                 speed = (int) event.getNewValue();
+                break;
 
             case "start":
                 isRunning = true;
