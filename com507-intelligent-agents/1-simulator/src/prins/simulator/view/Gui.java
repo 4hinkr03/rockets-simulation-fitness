@@ -278,7 +278,7 @@ public class Gui extends JFrame {
             Component component = super.getTableCellRendererComponent(
                     table, value, isSelected, hasFocus, row, column);
 
-            Agent agent = model.getAgent(new Location(row, column));
+            Agent agent = model.getAgent(new Location(column, row));
 
             if (agent != null && agentTypesMap.containsKey(agent.getClass())) {
                 component.setBackground(agentTypesMap.get(agent.getClass()));
