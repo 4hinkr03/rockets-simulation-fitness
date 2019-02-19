@@ -39,14 +39,14 @@ public class Ocean extends Environment {
     public List<Location> findFreeLocations(Location location) {
         List<Location> freeLocations = new ArrayList<>();
 
-        int rowStart = Math.max(location.getY() - 1, 0);
-        int rowFinish = Math.min(location.getY() + 1, world.length - 1);
-        int colStart = Math.max(location.getX() - 1, 0);
-        int colFinish = Math.min(location.getX() + 1, world[0].length - 1);
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+                int row = location.getY() + rowOffset;
+                int col = location.getX() + columnOffset;
 
-        for (int row = rowStart; row <= rowFinish; row++) {
-            for (int col = colStart; col <= colFinish; col++) {
-                if (world[row][col] == null) {
+                if (row >= 0 && row <= world.length - 1 
+                        && col >= 0 && col <= world[0].length - 1 
+                        && world[row][col] == null) {
                     freeLocations.add(new Location(col, row));
                 }
             }
