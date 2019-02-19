@@ -48,7 +48,7 @@ public class Ocean extends Environment {
         for (int row = rowStart; row <= rowFinish; row++) {
             for (int col = colStart; col <= colFinish; col++) {
                 if (world[row][col] == null) {
-                    freeLocations.add(new Location(row, col));
+                    freeLocations.add(new Location(col, row));
                 }
             }
         }
