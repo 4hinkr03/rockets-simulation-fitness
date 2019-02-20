@@ -111,7 +111,9 @@ public class Gui extends JFrame {
         }
 
         updateLegend();
-        world.repaint();
+
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -260,8 +262,6 @@ public class Gui extends JFrame {
     }
 
     private void updateLegend() {
-        legendPanel.removeAll();
-
         Map<Class, Integer> agentCounts = new HashMap<>();
 
         for (int row = 0; row < model.getHeight(); row++) {
@@ -278,6 +278,8 @@ public class Gui extends JFrame {
                 }
             }
         }
+
+        legendPanel.removeAll();
 
         for (Class agent : agentCounts.keySet()) {
             JLabel colorLabel = new JLabel();
