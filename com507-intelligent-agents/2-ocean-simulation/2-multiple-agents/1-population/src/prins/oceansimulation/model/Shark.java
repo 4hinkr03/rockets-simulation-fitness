@@ -28,11 +28,10 @@ import prins.simulator.model.Location;
  */
 public class Shark extends Agent {
 
-    private final Random random;
+    private static final Random RANDOM_GENERATOR = new Random(OceanConfig.SEED);
 
     public Shark(int x, int y) {
         super(new Location(x, y));
-        random = new Random(OceanConfig.SEED);
     }
 
     public void act(Ocean ocean) {
@@ -41,7 +40,7 @@ public class Shark extends Agent {
         if (freeLocations.size() > 0) {
             ocean.setAgent(null, location);
 
-            int index = random.nextInt(freeLocations.size());
+            int index = RANDOM_GENERATOR.nextInt(freeLocations.size());
             location = freeLocations.get(index);
 
             ocean.setAgent(this, location);
