@@ -48,12 +48,12 @@ public class OceanSimulation extends Simulator {
     }
 
     private void populate() {
-        random = new Random(OceanConstants.seed);
+        random = new Random(OceanConfig.SEED);
 
         for (int row = 0; row < ocean.getWidth(); row++) {
             for (int col = 0; col < ocean.getHeight(); col++) {
 
-                if (random.nextDouble() < OceanConstants.SHARK_BREEDING_PROBABILITY) {
+                if (random.nextDouble() < OceanConfig.SHARK_BREEDING_PROBABILITY) {
                     Shark shark = new Shark(col, row);
                     ocean.setAgent(shark, shark.getLocation());
                     sharks.add(shark);

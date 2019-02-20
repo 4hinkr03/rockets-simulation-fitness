@@ -18,7 +18,7 @@ package prins.oceansimulation.model;
 
 import java.util.List;
 import java.util.Random;
-import prins.oceansimulation.OceanConstants;
+import prins.oceansimulation.OceanConfig;
 import prins.simulator.model.Agent;
 import prins.simulator.model.Location;
 
@@ -32,7 +32,7 @@ public class Shark extends Agent {
 
     public Shark(int x, int y) {
         super(new Location(x, y));
-        random = new Random(OceanConstants.seed);
+        random = new Random(OceanConfig.SEED);
     }
 
     public void act(Ocean ocean) {

@@ -20,8 +20,8 @@ package prins.oceansimulation;
  *
  * @author Prins Butt
  */
-public class OceanConstants {
+public class OceanConfig {
 
-    public static double SHARK_BREEDING_PROBABILITY = 0.1;
-    public static int seed = 28;
+    public static final double SHARK_BREEDING_PROBABILITY = 0.1;
+    public static final int SEED = 28;
 }
