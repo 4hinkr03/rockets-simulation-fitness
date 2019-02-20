@@ -22,7 +22,7 @@ package prins.oceansimulation;
  */
 public class OceanConfig {
 
+    public static final int SEED = 28;
     public static final double SHARK_BREEDING_PROBABILITY = 0.1;
     public static final int SHARK_MAXIMUM_AGE = 100;
-    public static final int SEED = 28;
 }
