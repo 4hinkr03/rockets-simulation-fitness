@@ -29,11 +29,11 @@ import prins.simulator.model.Location;
  */
 public class Ocean extends Environment {
 
-    Agent[][] world = new Agent[Config.WORLD_WIDTH][Config.WORLD_HEIGHT];
+    Agent[][] world = new Agent[Config.world_width][Config.world_height];
 
     @Override
     public void clear() {
-        world = new Agent[Config.WORLD_WIDTH][Config.WORLD_HEIGHT];
+        world = new Agent[Config.world_width][Config.world_height];
     }
 
     public List<Location> findFreeLocations(Location location) {
@@ -62,12 +62,12 @@ public class Ocean extends Environment {
 
     @Override
     public int getHeight() {
-        return Config.WORLD_WIDTH;
+        return Config.world_height;
     }
 
     @Override
     public int getWidth() {
-        return Config.WORLD_HEIGHT;
+        return Config.world_width;
     }
 
     @Override
