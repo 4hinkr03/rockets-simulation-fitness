@@ -46,7 +46,7 @@ public abstract class Simulator implements PropertyChangeListener {
      */
     public Simulator() {
         step = 0;
-        speed = Config.INIT_SIM_SPEED;
+        speed = Config.initial_simulation_speed;
     }
 
     @Override
@@ -92,7 +92,7 @@ public abstract class Simulator implements PropertyChangeListener {
         while (true) {
 
             try {
-                Thread.sleep((Config.MAX_SIM_SPEED / speed) * 100);
+                Thread.sleep((Config.max_simulation_speed / speed) * 100);
 
                 if (isRunning) {
                     step++;

@@ -175,9 +175,9 @@ public class Gui extends JFrame {
         controlsPanel.add(new JLabel("Speed"));
 
         speedSlider = new JSlider(JSlider.HORIZONTAL,
-                Config.MIN_SIM_SPEED,
-                Config.MAX_SIM_SPEED,
-                Config.INIT_SIM_SPEED);
+                Config.min_simulation_speed,
+                Config.max_simulation_speed,
+                Config.initial_simulation_speed);
         speedSlider.setMinorTickSpacing(1);
         speedSlider.setPaintTicks(true);
         speedSlider.addChangeListener((ChangeEvent e) -> {
@@ -190,7 +190,7 @@ public class Gui extends JFrame {
     }
 
     private void initGui() {
-        setTitle(Config.SIM_NAME);
+        setTitle(Config.simulation_name);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setDefaultLookAndFeelDecorated(true);
         setLayout(new BorderLayout());
@@ -204,9 +204,9 @@ public class Gui extends JFrame {
     private void initWorld() {
         DefaultTableModel tableModel = new DefaultTableModel(
                 (model.getWidth() > 0)
-                ? model.getWidth() : Config.WORLD_WIDTH,
+                ? model.getWidth() : Config.world_width,
                 (model.getHeight() > 0)
-                ? model.getHeight() : Config.WORLD_WIDTH
+                ? model.getHeight() : Config.world_width
         );
 
         world = new JTable(tableModel);
@@ -214,8 +214,8 @@ public class Gui extends JFrame {
 
         for (int col = 0; col < model.getWidth(); col++) {
             TableColumn column = world.getColumnModel().getColumn(col);
-            column.setMinWidth(Config.WORLD_CELL_SIZE);
-            column.setMaxWidth(Config.WORLD_CELL_SIZE);
+            column.setMinWidth(Config.world_cell_size);
+            column.setMaxWidth(Config.world_cell_size);
             world.setDefaultRenderer(world.getColumnClass(col), new CellRenderer());
         }
 
