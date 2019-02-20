@@ -26,35 +26,35 @@ public class Config {
     /**
      * The name of the simulator.
      */
-    public static String SIM_NAME = "Simulator";
+    public static final String SIM_NAME = "Simulator";
 
     /**
      * The initial speed of simulation.
      */
-    public static int INIT_SIM_SPEED = 1;
+    public static final int INIT_SIM_SPEED = 1;
 
     /**
      * The minimum speed of simulation.
      */
-    public static int MIN_SIM_SPEED = 1;
+    public static final int MIN_SIM_SPEED = 1;
 
     /**
      * The maximum speed of simulation.
      */
-    public static int MAX_SIM_SPEED = 10;
+    public static final int MAX_SIM_SPEED = 10;
 
     /**
      * The width of the world to be simulated.
      */
-    public static int WORLD_WIDTH = 30;
+    public static final int WORLD_WIDTH = 30;
 
     /**
      * The height of the world to be simulated.
      */
-    public static int WORLD_HEIGHT = 30;
+    public static final int WORLD_HEIGHT = 30;
 
     /**
      * The size of a cell in the world to simulated.
      */
-    public static int WORLD_CELL_SIZE = 20;
+    public static final int WORLD_CELL_SIZE = 20;
 }
