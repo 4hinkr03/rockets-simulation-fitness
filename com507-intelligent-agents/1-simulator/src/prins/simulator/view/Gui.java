@@ -93,13 +93,6 @@ public class Gui extends JFrame {
     public void registerAgentColors(Class agent, Color color) {
         if (!agentTypesMap.containsKey(agent)) {
             agentTypesMap.put(agent, color);
-
-            JLabel colorLabel = new JLabel();
-            colorLabel.setBackground(color);
-            colorLabel.setOpaque(true);
-            colorLabel.setPreferredSize(new Dimension(15, 15));
-            legendPanel.add(colorLabel);
-            legendPanel.add(new JLabel(agent.getSimpleName()));
         }
     }
 
@@ -117,6 +110,7 @@ public class Gui extends JFrame {
             setVisible(true);
         }
 
+        updateLegend();
         world.repaint();
     }
 
@@ -263,6 +257,40 @@ public class Gui extends JFrame {
         }
 
         changes.firePropertyChange("stop", true, false);
+    }
+    
+    private void updateLegend() {
+        legendPanel.removeAll();
+
+        Map<Class, Integer> agentCounts = new HashMap<>();
+
+        for (int row = 0; row < model.getHeight(); row++) {
+            for (int col = 0; col < model.getWidth(); col++) {
+                Agent agent = model.getAgent(new Location(col, row));
+
+                if (agent != null) {
+                    if (agentCounts.containsKey(agent.getClass())) {
+                        int count = agentCounts.get(agent.getClass()) + 1;
+                        agentCounts.put(agent.getClass(), count);
+                        System.out.println(count);
+                    } else {
+                        agentCounts.put(agent.getClass(), 1);
+                    }
+                }
+            }
+        }
+        
+        for (Class agent : agentCounts.keySet()) {
+            JLabel colorLabel = new JLabel();
+            colorLabel.setBackground(agentTypesMap.get(agent));
+            colorLabel.setOpaque(true);
+            colorLabel.setPreferredSize(new Dimension(15, 15));
+            legendPanel.add(colorLabel);
+
+            StringBuilder data = new StringBuilder(agent.getSimpleName());
+            data.append(" (").append(agentCounts.get(agent)).append(") ");
+            legendPanel.add(new JLabel(data.toString()));
+        }
     }
 
     private class CellRenderer extends DefaultTableCellRenderer {
