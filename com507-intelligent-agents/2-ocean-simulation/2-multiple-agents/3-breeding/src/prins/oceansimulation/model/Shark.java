@@ -37,7 +37,7 @@ public class Shark extends Agent {
 
     public Shark(int x, int y) {
         super(new Location(x, y));
-        MAX_AGE = RANDOM_GENERATOR.nextInt(OceanConfig.SHARK_MAXIMUM_AGE);
+        MAX_AGE = RANDOM_GENERATOR.nextInt(OceanConfig.SHARK_MAX_AGE);
         isAlive = true;
     }
 
