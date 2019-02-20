@@ -258,7 +258,7 @@ public class Gui extends JFrame {
 
         changes.firePropertyChange("stop", true, false);
     }
-    
+
     private void updateLegend() {
         legendPanel.removeAll();
 
@@ -272,14 +272,13 @@ public class Gui extends JFrame {
                     if (agentCounts.containsKey(agent.getClass())) {
                         int count = agentCounts.get(agent.getClass()) + 1;
                         agentCounts.put(agent.getClass(), count);
-                        System.out.println(count);
                     } else {
                         agentCounts.put(agent.getClass(), 1);
                     }
                 }
             }
         }
-        
+
         for (Class agent : agentCounts.keySet()) {
             JLabel colorLabel = new JLabel();
             colorLabel.setBackground(agentTypesMap.get(agent));
